@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DieCutLabel Version="8.0" Units="twips">
+	<PaperOrientation>Portrait</PaperOrientation>
+	<Id>Small30336</Id>
+	<CustomPaper>
+		<Size Width="1260" Height="2880" />
+		<PrintableSize Width="720" Height="2880" />
+		<PrintableOrigin X="0" Y="0" />
+		<Offset X="350" Y="100" />
+	</CustomPaper>
+	<DrawCommands>
+		<RoundRectangle X="0" Y="0" Width="720" Height="2160" Rx="180" Ry="180" />
+		<RoundRectangle X="200" Y="2200" Width="500" Height="500" Rx="270" Ry="270" />
+	</DrawCommands>
+	<ObjectInfo>
+		<TextObject>
+			<Name>label-text-main</Name>
+			<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />
+			<BackColor Alpha="0" Red="255" Green="255" Blue="255" />
+			<LinkedObjectName></LinkedObjectName>
+			<Rotation>Rotation90</Rotation>
+			<IsMirrored>False</IsMirrored>
+			<IsVariable>False</IsVariable>
+			<HorizontalAlignment>Center</HorizontalAlignment>
+			<VerticalAlignment>Middle</VerticalAlignment>
+			<TextFitMode>ShrinkToFit</TextFitMode>
+			<UseFullFontHeight>True</UseFullFontHeight>
+			<Verticalized>False</Verticalized>
+			<StyledText>
+				<Element>
+					<String>9138-6000</String>
+					<Attributes>
+						<Font Family="Arial" Size="12" Bold="False" Italic="False" Underline="False" Strikeout="False" />
+						<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />
+					</Attributes>
+				</Element>
+			</StyledText>
+		</TextObject>
+		<Bounds X="40.5633811950684" Y="44.7887306213379" Width="652.394348144531" Height="2051.8310546875" />
+	</ObjectInfo>
+	<ObjectInfo>
+		<TextObject>
+			<Name>label-text-dot</Name>
+			<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />
+			<BackColor Alpha="0" Red="255" Green="255" Blue="255" />
+			<LinkedObjectName></LinkedObjectName>
+			<Rotation>Rotation0</Rotation>
+			<IsMirrored>False</IsMirrored>
+			<IsVariable>False</IsVariable>
+			<HorizontalAlignment>Center</HorizontalAlignment>
+			<VerticalAlignment>Middle</VerticalAlignment>
+			<TextFitMode>ShrinkToFit</TextFitMode>
+			<UseFullFontHeight>True</UseFullFontHeight>
+			<Verticalized>False</Verticalized>
+			<StyledText>
+				<Element>
+					<String>Spot</String>
+					<Attributes>
+						<Font Family="Arial" Size="12" Bold="False" Italic="False" Underline="False" Strikeout="False" />
+						<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />
+					</Attributes>
+				</Element>
+			</StyledText>
+		</TextObject>
+		<Bounds X="250.140838623047" Y="2241.12670898438" Width="395.492950439453" Height="429.295776367188" />
+	</ObjectInfo>
+</DieCutLabel>

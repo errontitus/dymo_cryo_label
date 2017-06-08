@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    <!-- The CSS package above applies Google styling to buttons and other elements. -->
+    <style>
+    <!-- Some supplemental styling stolen from the Google Translate Apps Script example. -->
+    .branding-below {
+      bottom: 56px;
+      top: 0;
+    }
+    .width-100 {
+      width: 100%;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="sidebar branding-below">
+      <div class="block form-group">
+        <label for="label-text-main"><b></b></label>
+        <textarea class="width-100" id="label-text-main" rows="10"></textarea>
+      </div>
+      <div class="block form-group">
+        <label for="label-text-dot"><b></b></label>
+        <textarea class="width-100" id="label-text-dot" rows="1" disabled></textarea>
+      </div>
+      <div id="printersDiv">
+        <p>
+        <label for="printersSelect">Printer:</label>
+	    <select id="printersSelect"></select>
+        <p>
+	    <button id="printButton">Print</button>
+	  </div>
+    </div>
+    <div class="sidebar bottom">
+      <textarea class="width-100 secondary" id="console-output" rows="20" disabled></textarea>
+      <span class="gray branding-text">DYMO CryoLabel (by Erron Titus)</span>
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <!-- The DYMO Framework is not a hosted library at this time, so we have to host our own copy. -->
+    <script src="https://rawgit.com/errontitus/DYMOLabelFramework/master/DYMO.Label.Framework.2.0.2.js"></script>
+    <script>
+
+      ///////////////////////////////////
+      var myDymo = (function() {
+
+        // To ensure that multiple labels can be printed with no carryover of values from one to the next, myDymo should not maintain any state other than the empty label format. 
+        var _labelXML;
+        
+        function _initialize()
+        {
+          return new Promise(function(resolve, reject) {
+            dymo.label.framework.init(onLoad); // initialize, then invoke a callback            
+            function onLoad()
+            {
+              dymo.label.framework.trace = 1; 
+              resolve("DYMO Framework initialized.");
+            }
+          });
+        }
+
+        function _loadLabel(url)
+        {
+          return new Promise(function(resolve, reject) {
+            $.get(url, function(xml) 
+              {
+                _labelXML = xml;
+                resolve("Label XML retrieved.");
+              })
+            .fail(function() 
+              {
+                reject("Failed to retrieve label XML.");              
+              });           
+          });
+        }
+
+        function _createLabel()
+        {
+          if (!_labelXML)
+          {
+            console.log("Label XML is empty.");
+            return;
+          }
+          
+          var label;
+          try
+          {
+            // Can fail if the format XML is bad.              
+            label = dymo.label.framework.openLabelXml(_labelXML);
+            return label;
+          }
+          catch (e)
+          {
+            alert(e.message);
+          }
+        }
+        
+        function _createLabelSet(labelObjects, labelValues)
+        {
+          var labelSet = new dymo.label.framework.LabelSetBuilder();
+          var record = labelSet.addRecord();
+          var i = 0, max;
+          for (i = 0; max = labelObjects.length, i < max; ++i)
+          {
+            record.setText(labelObjects[i], labelValues[i]);
+          }
+          return labelSet;
+        }
+
+        function _printLabel(labelObjects, labelValues, printerName)
+        {
+          var label = _createLabel();
+          var labelSet = _createLabelSet(labelObjects, labelValues);
+          try
+          {
+            if (!label)
+              console.log("Label does not exist.");
+            if (!labelSet)
+              console.log("LabelSet does not exist.")
+            
+            console.log("Printing to " + printerName);
+            label.print(printerName, "", labelSet);
+            // label.print(printerName);
+          }
+          catch (e)
+          {
+            alert(e.message);
+          }
+        }
+
+        return {
+          initialize: function() {
+            return _initialize();
+          },
+          loadLabel: function(url) {
+            return _loadLabel(url);
+          },
+          updateLabelSet: function(name, value) {
+            return _updateLabelSet(name, value);
+          },
+          printers: function() {
+            return dymo.label.framework.getLabelWriterPrinters();
+          },
+          printLabel: function(labelObjects, labelValues, printerName) {
+            return _printLabel(labelObjects, labelValues, printerName)
+          }
+        };
+      } ());
+
+      ///////////////////////////////////
+      var documentHelper = (function () {
+
+        const _elementTextMain = "label-text-main", _elementTextDot = "label-text-dot", _labelUrl = "https://rawgit.com/errontitus/DYMOLabelFramework/master/9138-6000_RCD_v1_0.label";
+
+        function _populatePrinters ()
+        {
+          var printButton = document.getElementById('printButton');
+          var printersSelect = document.getElementById('printersSelect');
+          var printers = myDymo.printers();
+
+          if (printers.length == 0)
+          {
+            alert("No DYMO LabelWriter printers are installed.");
+            return;
+          }
+        
+          console.log("Retrieving available printers");
+          var i = 0, max;
+          for (i = 0; max = printers.length, i < max; ++i)
+          {
+            var printer = printers[i];
+            var printerName = printer.name;
+
+            var option = document.createElement('option');
+            option.value = printerName;
+            option.appendChild(document.createTextNode(printerName));
+            printersSelect.appendChild(option);
+          }
+        }
+
+        function _printLabel()
+        {
+          var labelValues = [], labelObjects = []; 
+          
+          labelValues[0] = document.getElementById(_elementTextMain).value;
+          labelObjects[0] = _elementTextMain;
+          
+          labelValues[1] = document.getElementById(_elementTextDot).value;
+          labelObjects[1] = _elementTextDot;
+          
+          return myDymo.printLabel(labelObjects, labelValues, printersSelect.value);
+        }
+
+        function _setElementText(element, value)
+        {
+          try
+          {
+            document.getElementById(element).value = value;
+          }
+          catch (e)
+          {
+            alert(e.message);
+          }
+        }
+        
+        function _getLabelText(targetElement)
+        {
+          // Retrieves the label text from the server and stores it in the target element.
+          console.log("Retrieving label main text");
+          google.script.run
+            .withSuccessHandler(
+              function(value) {
+                _setElementText(targetElement, value);
+              })
+            .withFailureHandler(
+              function(message) {
+                console.log(message);
+              })
+            .getLabelText();
+        }
+
+        function _getSampleID(targetElement)
+        {
+          // Retrieves the sample ID from the server and stores it in the target element.
+          console.log("Retrieving label dot text");
+          google.script.run
+            .withSuccessHandler(
+              function(value) {
+                _setElementText(targetElement, value);
+              })
+            .withFailureHandler(
+              function(message) {
+                console.log(message);
+              })
+            .getSampleID();
+        }
+
+        function _loadSettings(url)
+        {
+          myDymo.loadLabel(url).then(function(result) 
+            { 
+              console.log(result);
+              _populatePrinters();
+            }, 
+            function(err) {
+              console.log(err); 
+            });
+          
+          _getLabelText(_elementTextMain);
+          _getSampleID(_elementTextDot);
+        }
+
+        function _initialize()
+        {
+          // Initialize the Framework using a promise/thenable so that we can wait for it to be available before we ask for printers.
+          myDymo.initialize()
+            .then(function(result) { 
+                console.log(result);
+                _loadSettings(_labelUrl);
+              }, 
+            function(err) { 
+                console.log(err); 
+              }
+            );
+        }
+        
+        return {
+          initialize: function() {
+            return _initialize();
+          },
+          printLabel: function() {
+            return _printLabel();
+          }
+        };
+      } ());
+
+      //////////////////////////
+      var logger = (function() {
+
+        // Store the pointer to the runtime's console.log function.
+        var nativeLog = console.log;
+
+        // Override console.log with our own function.
+        console.log = function (message) {
+          // Do not call console.log from within this function.
+          _updateTextArea(message);
+          nativeLog.apply(console, arguments);
+        }; 
+        
+        function _updateTextArea(message) {
+          // Do not call console.log from within this function.
+          var element = document.getElementById("console-output");
+          var prefix = "";
+          if (element.value) {prefix = element.value + "\n";}
+          element.value = prefix + message;
+          element.scrollTop = element.scrollHeight; 
+        }
+      })();
+
+      $(document).ready(function() {
+        documentHelper.initialize();
+      });
+
+      printButton.onclick = function()
+      {
+        documentHelper.printLabel();
+      };
+
+    </script>
+  </body>
+</html>
