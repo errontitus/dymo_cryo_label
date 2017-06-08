@@ -39,7 +39,8 @@
     </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <!-- The DYMO Framework is not a hosted library at this time, so we have to host our own copy. -->
-    <script src="https://rawgit.com/errontitus/DYMOLabelFramework/master/DYMO.Label.Framework.2.0.2.js"></script>
+    <!-- https://rawgit.com/errontitus/DYMOLabelFramework/master/DYMO.Label.Framework.2.0.2.js"></script> -->
+	<script src="https://rawgit.com/errontitus/dymo_cryo_label/master/dymo_frameworks/DYMO.Label.Framework.2.0.2.js"></script>
     <script>
 
       ///////////////////////////////////
@@ -151,7 +152,7 @@
       ///////////////////////////////////
       var documentHelper = (function () {
 
-        const _elementTextMain = "label-text-main", _elementTextDot = "label-text-dot", _labelUrl = "https://rawgit.com/errontitus/DYMOLabelFramework/master/9138-6000_RCD_v1_0.label";
+        const _elementTextMain = "label-text-main", _elementTextDot = "label-text-dot", _labelUrl = "https://rawgit.com/errontitus/dymo_cryo_label/master/label_templates/9138-6000_RCD_v1_0.label";
 
         function _populatePrinters ()
         {
