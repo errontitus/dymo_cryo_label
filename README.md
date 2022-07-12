@@ -1,8 +1,10 @@
 # dymo_cryo_label
 
-DYMO label printing using Google Drive and Google Apps Script. 
+Cryopreservation is an essential function for research laboratories. My preferred approach is to use Cryo Tag labels with a Direct Thermal printer - a low-cost Dymo printer is suitable. Although direct thermal labels can fade in hot or humid environments, they work great for -20, -80, and LN2 environments. Fancier approaches (e.g. expensive Brady printers) are suitable for larger budgets.
 
-This code is for printing labels for laboratory cryotubes. The present implementation prints a cryotube label and a numbered tough dot for the tube cap. The purpose of the app is to coordinate printing of the main label and the dot. The simpler scenario - just printing a label from a cell in a spreadsheet - can be accomplished without script.
+This code implments DYMO label printing using Google Drive and Google Apps Script. You keep track of samples in a Google sheet, and numbered tough dots and labels are printed for each tube.
+
+The present implementation prints a cryotube label and a numbered tough dot for the tube cap. The purpose of the app is to coordinate printing of the main label and the dot. The simpler scenario - just printing a label from a cell in a spreadsheet - can be accomplished without script.
 
 Most of the code is generally applicable and can be adapted for other labeling scenarios that require special logic. The basic idea is to provide an extremely low-overhead, multi-user sample-tracking system based on Google sheets.
 
