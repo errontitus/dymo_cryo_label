@@ -1,6 +1,6 @@
 # dymo_cryo_label
 
-Cryopreservation is an essential function for research laboratories. My preferred approach is to use Cryo Tag labels with a Direct Thermal printer - a low-cost Dymo printer is suitable. Although direct thermal labels can fade in hot or humid environments, they work great for -20, -80, and LN2 environments. Fancier approaches (e.g. expensive Brady printers) are suitable for larger budgets.
+Cryopreservation is an essential function for research laboratories. My preferred approach is to use Cryo Tag labels with a Direct Thermal printer - a low-cost Dymo printer is suitable. Although direct thermal labels can fade in hot or humid environments, they work great for -20, -80, and LN2 environments. Fancier approaches (e.g. expensive Brady printers) are suitable for larger budgets, or for situations where you want the label to withstand other kinds of insults (heat, solvents, etc).
 
 This code implments DYMO label printing using Google Drive and Google Apps Script. You keep track of samples in a Google sheet, and numbered tough dots and labels are printed for each tube. This is specifically compatible with a Cryo Tag brand label roll that contains a separate tough dot for the top of the tube - for example, a 1.5 x 0.5 inch label with a separate 3/8 inch dot works well, but you can use any size that fits your tubes.
 
